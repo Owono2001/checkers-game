@@ -1,0 +1,12 @@
+{
+  "scripts": {
+    "start": "parcel serve index.html",
+    "build": "parcel build index.html"
+  },
+  "devDependencies": {
+    "@types/youtube": "^0.1.0",
+    "parcel": "^2.14.2",
+    "parcel-bundler": "^1.12.5",
+    "typescript": "^5.8.2"
+  }
+}

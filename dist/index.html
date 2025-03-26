@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Professional Checkers Game</title>
+    <meta name="description" content="A modern implementation of Checkers with professional styling, smooth gameplay, and integrated music">
+    <link rel="stylesheet" href="/NewGame.3a01df49.css">
+    
+    <!-- Preload important resources -->
+    <link rel="preload" as="script" href="/game.6b4260c2.js">
+    
+    <!-- Add favicon -->
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>♟️</text></svg>">
+    
+    <!-- YouTube API -->
+    <script src="https://www.youtube.com/iframe_api"></script>
+</head>
+<body>
+    <div class="music-controls">
+        <div class="search-container">
+            <input type="text" id="music-search" placeholder="Search music...">
+            <button id="search-btn">Search</button>
+        </div>
+        <div id="search-results"></div>
+        <div id="player"></div>
+    </div>
+
+    <div class="game-container">
+        <canvas id="game-board" width="600" height="600"></canvas>
+        <div class="controls">
+            <div id="turn-indicator" class="black-turn">Black's Turn</div>
+            <button id="reset-btn">New Game</button>
+        </div>
+    </div>
+
+    <!-- Use type="module" for modern JavaScript/TypeScript -->
+    <script type="module" src="/NewGame.4092a63b.js"></script>
+</body>
+</html>

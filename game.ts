@@ -1,4 +1,3 @@
-
 type Piece = {
     color: 'black' | 'white';
     king: boolean;
@@ -12,14 +11,6 @@ type Position = {
 };
 
 
-// New interface for YouTube Player
-interface YouTubePlayer {
-    playVideo: () => void;
-    pauseVideo: () => void;
-    destroy: () => void;
-    loadVideoById: (videoId: string) => void;
-}
-
 
 class CheckersGame {
     private canvas: HTMLCanvasElement;
@@ -31,11 +22,6 @@ class CheckersGame {
     private currentPlayer: 'black' | 'white' = 'black';
     private validMoves: Position[] = [];
 
-     // YouTube-related properties
-     private youtubePlayer: YouTubePlayer | null = null;
-     private youtubeSearchResults: any[] = [];
-     private youtubeApiKey = 'your-api_key'; // Replace with your actual API key
-
     constructor() {
         this.canvas = document.getElementById('game-board') as HTMLCanvasElement;
         this.ctx = this.canvas.getContext('2d')!;
@@ -43,7 +29,6 @@ class CheckersGame {
         
         this.initBoard();
         this.drawBoard();
-        this.setupYouTubePlayer(); // Initialize YouTube player setup
         this.setupEventListeners();
     }
 
@@ -61,7 +46,6 @@ class CheckersGame {
             }
         }
     }
-
     private drawBoard(): void {
         // Draw board squares
         for (let row = 0; row < this.boardSize; row++) {
@@ -260,69 +244,6 @@ class CheckersGame {
         this.initBoard();
         this.drawBoard();
         this.updateTurnIndicator();
-    }
-
-    // YouTube-related methods
-    private setupYouTubePlayer(): void {
-        // Create the YouTube player when the API is ready
-        (window as any).onYouTubeIframeAPIReady = () => {
-            this.youtubePlayer = new YT.Player('player', {
-                events: {
-                    'onReady': (event: any) => this.onPlayerReady(event),
-                    'onStateChange': (event: any) => this.onPlayerStateChange(event)
-                }
-            });
-        };
-    }
-
-    private onPlayerReady(event: any): void {
-        this.youtubePlayer = event.target;
-        document.getElementById('player')!.style.display = 'block';
-    }
-
-    private onPlayerStateChange(event: any): void {
-        // Handle player state changes if needed
-        console.log('Player state changed:', event);
-    }
-
-    private async searchMusic(): Promise<void> {
-        const searchInput = document.getElementById('music-search') as HTMLInputElement;
-        const query = searchInput.value;
-        
-        try {
-            const response = await fetch(
-                `https://www.googleapis.com/youtube/v3/search?part=snippet&maxResults=5&q=${encodeURIComponent(query)}&type=video&key=${this.youtubeApiKey}`
-            );
-            
-            const data = await response.json();
-            this.youtubeSearchResults = data.items;
-            this.displaySearchResults();
-        } catch (error) {
-            console.error('Error searching YouTube:', error);
-        }
-    }
-
-    private displaySearchResults(): void {
-        const resultsContainer = document.getElementById('search-results')!;
-        resultsContainer.innerHTML = '';
-        
-        this.youtubeSearchResults.forEach(video => {
-            const div = document.createElement('div');
-            div.className = 'video-result';
-            div.innerHTML = `
-                <img src="${video.snippet.thumbnails.default.url}" style="width: 100px; height: 75px; margin-right: 0.5rem;">
-                <span>${video.snippet.title}</span>
-            `;
-            div.addEventListener('click', () => this.playVideo(video.id.videoId));
-            resultsContainer.appendChild(div);
-        });
-    }
-
-    private playVideo(videoId: string): void {
-        if (this.youtubePlayer) {
-            this.youtubePlayer.loadVideoById(videoId);
-            this.youtubePlayer.playVideo();
-        }
     }
 
     private setupEventListeners(): void {

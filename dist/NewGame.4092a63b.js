@@ -669,17 +669,11 @@ class CheckersGame {
         this.selectedPiece = null;
         this.currentPlayer = 'black';
         this.validMoves = [];
-        // YouTube-related properties
-        this.youtubePlayer = null;
-        this.youtubeSearchResults = [];
-        this.youtubeApiKey = 'AIzaSyC4UN7147G4DbkNkT3Pzrv2Py_loj9rLUY' // Replace with your actual API key
-        ;
         this.canvas = document.getElementById('game-board');
         this.ctx = this.canvas.getContext('2d');
         this.cellSize = this.canvas.width / this.boardSize;
         this.initBoard();
         this.drawBoard();
-        this.setupYouTubePlayer(); // Initialize YouTube player setup
         this.setupEventListeners();
     }
     initBoard() {
@@ -848,58 +842,6 @@ class CheckersGame {
         this.initBoard();
         this.drawBoard();
         this.updateTurnIndicator();
-    }
-    // YouTube-related methods
-    setupYouTubePlayer() {
-        // Create the YouTube player when the API is ready
-        window.onYouTubeIframeAPIReady = ()=>{
-            this.youtubePlayer = new YT.Player('player', {
-                events: {
-                    'onReady': (event)=>this.onPlayerReady(event),
-                    'onStateChange': (event)=>this.onPlayerStateChange(event)
-                }
-            });
-        };
-    }
-    onPlayerReady(event) {
-        this.youtubePlayer = event.target;
-        document.getElementById('player').style.display = 'block';
-    }
-    onPlayerStateChange(event) {
-        // Handle player state changes if needed
-        console.log('Player state changed:', event);
-    }
-    async searchMusic() {
-        const searchInput = document.getElementById('music-search');
-        const query = searchInput.value;
-        try {
-            const response = await fetch(`https://www.googleapis.com/youtube/v3/search?part=snippet&maxResults=5&q=${encodeURIComponent(query)}&type=video&key=${this.youtubeApiKey}`);
-            const data = await response.json();
-            this.youtubeSearchResults = data.items;
-            this.displaySearchResults();
-        } catch (error) {
-            console.error('Error searching YouTube:', error);
-        }
-    }
-    displaySearchResults() {
-        const resultsContainer = document.getElementById('search-results');
-        resultsContainer.innerHTML = '';
-        this.youtubeSearchResults.forEach((video)=>{
-            const div = document.createElement('div');
-            div.className = 'video-result';
-            div.innerHTML = `
-                <img src="${video.snippet.thumbnails.default.url}" style="width: 100px; height: 75px; margin-right: 0.5rem;">
-                <span>${video.snippet.title}</span>
-            `;
-            div.addEventListener('click', ()=>this.playVideo(video.id.videoId));
-            resultsContainer.appendChild(div);
-        });
-    }
-    playVideo(videoId) {
-        if (this.youtubePlayer) {
-            this.youtubePlayer.loadVideoById(videoId);
-            this.youtubePlayer.playVideo();
-        }
     }
     setupEventListeners() {
         this.canvas.addEventListener('click', (e)=>this.handleClick(e));
